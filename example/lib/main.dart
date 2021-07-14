@@ -21,20 +21,17 @@ class LoginPage extends StatelessWidget {
         child: ElevatedButton(
             child: Text("Continue with instagram"),
             onPressed: () async {
-
               bool isLogged = await InstagramAuth().isLogged;
               // check if user already logged in, if not log the user
               if (!isLogged) {
                 bool loginStatus = await InstagramAuth().signUserIn(context);
 
                 // if user canceled the operation
-                if (!loginStatus)
-                  return;
+                if (!loginStatus) return;
               }
 
-
               final accessMapData = await InstagramAuth().accessData;
-              if(accessMapData == null){
+              if (accessMapData == null) {
                 return null;
               }
 
@@ -46,7 +43,7 @@ class LoginPage extends StatelessWidget {
                     accessMapData,
                     showLogoutButton: true,
                     onDone: (items) {
-                      items.forEach((element) {
+                      items?.forEach((element) {
                         print('selected: ${element.url}');
                       });
                       Navigator.pop(context);
