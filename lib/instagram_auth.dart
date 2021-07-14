@@ -24,7 +24,7 @@ class InstagramAuth with ChangeNotifier {
 
   /// Saving access data on cache for later usage
   Future<void> _setData(
-      {@required String sessionKey, @required String userId}) async {
+      {required String sessionKey, required String userId}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("instagram_auth.logged", true);
     await prefs.setString("instagram_auth.sessionKey", sessionKey);
@@ -39,13 +39,13 @@ class InstagramAuth with ChangeNotifier {
 
   /// Return the unique access data (userID & sessionKey) generated when
   /// he logged in
-  Future<Map<String, String>> get accessData async {
+  Future<Map<String, String?>?> get accessData async {
     if (!await isLogged) {
       return null;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String sessionKey = prefs.getString("instagram_auth.sessionKey");
-    String userId = prefs.getString("instagram_auth.userId");
+    String? sessionKey = prefs.getString("instagram_auth.sessionKey");
+    String? userId = prefs.getString("instagram_auth.userId");
 
     return {
       'sessionKey': sessionKey,
@@ -55,9 +55,10 @@ class InstagramAuth with ChangeNotifier {
 
   /// Tries to login a user (by his username)
   /// If successful, keep the access data on cache
-  Future<void> login(String username, String password) async {
-    Map accessMapResponse =
+  Future<void> login(String? username, String? password) async {
+    Map? accessMapResponse =
         await InstagramApiClient().signInUser(username, password);
+    if (accessMapResponse == null || accessMapResponse.isEmpty) return;
     await _setData(
       sessionKey: accessMapResponse['sessionKey'],
       userId: "${accessMapResponse['userID']}",

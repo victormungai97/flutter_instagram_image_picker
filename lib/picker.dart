@@ -10,19 +10,19 @@ import 'ui/photo_grid.dart';
 
 /// Widget that presents the Image picker of photos of an Instagram account
 class InstagramImagePicker extends StatefulWidget {
-  final Map<String, String> _accessMap;
+  final Map<String, String?> _accessMap;
 
   /// AppBar config
   final String appBarTitle;
-  final TextStyle appBarTextStyle;
-  final Color appBarColor;
+  final TextStyle? appBarTextStyle;
+  final Color? appBarColor;
 
   /// AppBar actions
   final String doneBtnText;
-  final TextStyle doneBtnTextStyle;
-  final Function(List<Photo>) onDone;
+  final TextStyle? doneBtnTextStyle;
+  final Function(List<Photo>?) onDone;
   final String cancelBtnText;
-  final TextStyle cancelBtnTextStyle;
+  final TextStyle? cancelBtnTextStyle;
   final Function onCancel;
   final bool showLogoutButton;
 
@@ -33,10 +33,10 @@ class InstagramImagePicker extends StatefulWidget {
     this.appBarColor,
     this.doneBtnText = 'Done',
     this.doneBtnTextStyle,
-    @required this.onDone,
+    required this.onDone,
     this.cancelBtnText = 'Cancel',
     this.cancelBtnTextStyle,
-    @required this.onCancel,
+    required this.onCancel,
     this.showLogoutButton = false,
   }); //: assert(_accessToken != null);
 
@@ -46,23 +46,23 @@ class InstagramImagePicker extends StatefulWidget {
 
 class _InstagramImagePickerState extends State<InstagramImagePicker>
     with TickerProviderStateMixin {
-  InstagramApiClient _client;
+  late InstagramApiClient _client;
   List<Photo> _photos = [];
 
-  int _page;
+  int? _page;
   bool _hasNext = true;
 
-  List<Photo> _selectedPhotos;
+  List<Photo>? _selectedPhotos;
   static bool first = true;
 
-  AnimationController _controller;
+  late AnimationController _controller;
 
   // Animation<Offset> _imageListPosition;
 
   @override
   void initState() {
     super.initState();
-    _selectedPhotos = List<Photo>();
+    _selectedPhotos = [];
 
     _client = InstagramApiClient();
 
@@ -108,12 +108,12 @@ class _InstagramImagePickerState extends State<InstagramImagePicker>
       photoPaging = await _client.fetchPhotos(
         userId: widget._accessMap['userId'],
         sessionKey: widget._accessMap['sessionKey'],
-        page: _page + 1,
+        page: _page! + 1,
       );
-      _page++;
+      _page = _page! + 1;
     }
 
-    if (!photoPaging.hasNext) {
+    if (!photoPaging.hasNext!) {
       _hasNext = false;
     }
 
@@ -167,16 +167,16 @@ class _InstagramImagePickerState extends State<InstagramImagePicker>
   }
 
   void _onPhotoTap(Photo photo) {
-    int itemIndex = _selectedPhotos.indexOf(photo);
+    int itemIndex = _selectedPhotos!.indexOf(photo);
 
     if (itemIndex == -1) {
       return setState(() {
-        _selectedPhotos.add(photo);
+        _selectedPhotos!.add(photo);
       });
     }
 
     setState(() {
-      _selectedPhotos.removeAt(itemIndex);
+      _selectedPhotos!.removeAt(itemIndex);
     });
   }
 
@@ -229,7 +229,7 @@ class _InstagramImagePickerState extends State<InstagramImagePicker>
                 ),
                 //color: Colors.indigo,
                 child: Text(
-                  "${widget.doneBtnText} (${_selectedPhotos.length})",
+                  "${widget.doneBtnText} (${_selectedPhotos!.length})",
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: _onDone,

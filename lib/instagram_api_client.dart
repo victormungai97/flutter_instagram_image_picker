@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'model/photo_paging.dart';
@@ -14,12 +15,13 @@ class InstagramApiClient {
   InstagramApiClient();
 
   /// Signing in a user with the given username and password
-  Future<Map> signInUser(String username, String password) async {
+  Future<Map?> signInUser(String? username, String? password) async {
     String url = "$_endpoint/login?username=$username&password=$password";
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode != 200) {
-      print(response.statusCode);
+      debugPrint(
+          'Instagram signin error!\n${response.statusCode}\n${response.body}');
       return {};
     }
 
@@ -29,9 +31,9 @@ class InstagramApiClient {
   /// Retrieve an instagram account's feed images recognized by [sessionKey]
   /// and his [userId]
   Future<PhotoPaging> fetchPhotos({
-    @required String sessionKey,
-    @required String userId,
-    int page,
+    required String? sessionKey,
+    required String? userId,
+    int? page,
   }) async {
     //String url = pagingUrl ?? '$_graphApiEndpoint/?access_token=$_accessToken';
 
@@ -42,11 +44,11 @@ class InstagramApiClient {
 
     var response = await http.get(Uri.parse(url));
 
-    Map<String, dynamic> body = {};
+    Map<String, dynamic>? body = {};
     if (response.statusCode == 200) {
       body = json.decode(response.body);
     }
 
-    return PhotoPaging.fromJson(body);
+    return PhotoPaging.fromJson(body!);
   }
 }

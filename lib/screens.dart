@@ -10,8 +10,8 @@ class InstagramLoginPage extends StatefulWidget {
 }
 
 class _InstagramLoginPageState extends State<InstagramLoginPage> {
-  String _username;
-  String _password;
+  String? _username;
+  String? _password;
   bool _isValid = false;
   bool _isPasswordVisible = false;
   bool _selectedPasswordField = false;
@@ -51,7 +51,7 @@ class _InstagramLoginPageState extends State<InstagramLoginPage> {
                         borderRadius: BorderRadius.circular(4),
                         border: Border.all(
                           color: !_selectedPasswordField
-                              ? Colors.grey[700]
+                              ? Colors.grey[700]!
                               : Colors.grey,
                           width: 1.1,
                         )),
@@ -74,7 +74,7 @@ class _InstagramLoginPageState extends State<InstagramLoginPage> {
                         hintStyle: TextStyle(color: Colors.grey[600]),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.grey[600], width: 0),
+                              BorderSide(color: Colors.grey[600]!, width: 0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey, width: 0),
@@ -91,7 +91,7 @@ class _InstagramLoginPageState extends State<InstagramLoginPage> {
                         borderRadius: BorderRadius.circular(4),
                         border: Border.all(
                           color: _selectedPasswordField
-                              ? Colors.grey[700]
+                              ? Colors.grey[700]!
                               : Colors.grey,
                           width: 1.1,
                         )),
@@ -135,7 +135,7 @@ class _InstagramLoginPageState extends State<InstagramLoginPage> {
                         hintStyle: TextStyle(color: Colors.grey[600]),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.grey[600], width: 0),
+                              BorderSide(color: Colors.grey[600]!, width: 0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey, width: 0),
@@ -149,7 +149,7 @@ class _InstagramLoginPageState extends State<InstagramLoginPage> {
                     width: double.infinity,
                     height: 40,
                     child: CupertinoButton.filled(
-                        disabledColor: Colors.blue[100],
+                        disabledColor: Colors.blue[100]!,
                         padding: const EdgeInsets.all(2),
                         borderRadius: BorderRadius.circular(4),
                         child: Text("Log In",
@@ -178,7 +178,7 @@ class _InstagramLoginPageState extends State<InstagramLoginPage> {
   /// accordingly
   void _checkForm() {
     setState(() {
-      _isValid = _password.isNotEmpty && _username.isNotEmpty;
+      _isValid = _password!.isNotEmpty && _username!.isNotEmpty;
     });
   }
 }
